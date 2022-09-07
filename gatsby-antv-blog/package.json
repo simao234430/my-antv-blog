@@ -1,0 +1,15 @@
+{
+    "name": "gatsby-antv-blog",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "peerDependencies": {
+        "gatsby": "^4.22.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "dependencies": {
+        "gatsby-source-filesystem": "^4.22.0",
+        "gatsby-transformer-yaml": "^4.22.0"
+    }
+}
