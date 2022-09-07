@@ -1,83 +1,100 @@
-const fs = require("fs")
+const path = require(`path`);
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const { getSlugAndLang } = require('ptz-i18n');
 
+const documentTemplate = require.resolve(`./src/templates/document.tsx`);
 // Make sure the data directory exists
-exports.onPreBootstrap = ({ reporter }) => {
-  const contentPath = `${__dirname}/data/`
-
-  if (!fs.existsSync(contentPath)) {
-    reporter.info(`creating the ${contentPath} directory`)
-    fs.mkdirSync(contentPath)
-  }
-}
+exports.onPreBootstrap = ({ store, reporter }) => {
+    const { program } = store.getState();
+  
+    const dirs = [
+      path.join(program.directory, 'docs'),
+      path.join(program.directory, 'images'),
+    ];
+  
+    dirs.forEach(dir => {
+      if (!fs.existsSync(dir)) {
+        reporter.log(`creating the ${dir} directory`);
+        mkdirp.sync(dir);
+      }
+    });
+  };
+  
 
 // Define the "Event" type
 exports.createSchemaCustomization = ({ actions }) => {
-  actions.createTypes(`
-    type Event implements Node @dontInfer {
-      id: ID!
-      name: String!
-      location: String!
-      startDate: Date! @dateformat @proxy(from: "start_date")
-      endDate: Date! @dateformat @proxy(from: "end_date")
-      url: String!
-      slug: String!
-    }
-  `)
+
 }
 
 // Define resolvers for custom fields
 exports.createResolvers = ({ createResolvers }) => {
-    const basePath = "/"
-    // Quick-and-dirty helper to convert strings into URL-friendly slugs.
-    const slugify = str => {
-      const slug = str
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "")
-      return `/${basePath}/${slug}`.replace(/\/\/+/g, "/")
-    }
-    createResolvers({
-      Event: {
-        slug: {
-          resolve: source => slugify(source.name),
-        },
-      },
-    })
+
   }
 
-  // query for events and create pages
-exports.createPages = async ({ actions, graphql, reporter }) => {
-    const basePath = "/"
-    actions.createPage({
-      path: basePath,
-      component: require.resolve("./src/templates/events.js"),
-    })
+  // Add custom url pathname for posts
+exports.onCreateNode = ({ node, actions, getNode, store }) => {
+    const { createNodeField } = actions;
+    const { program } = store.getState();
+    if (node.internal.type === `File`) {
+      createNodeField({
+        node,
+      });
+    } else if (node.internal.type === `MarkdownRemark`) {
+      const { slug, langKey } = getSlugAndLang(
+        {
+          langKeyForNull: 'any',
+          langKeyDefault: 'none',
+          useLangKeyLayout: false,
+          pagesPaths: [program.directory],
+          prefixDefault: true,
+        },
+        node.fileAbsolutePath,
+      );
+    //   if (!slug) {
+    //     return;
+    //   }
+      createNodeField({
+        node,
+        name: `slug`,
+        value: (langKey === 'none' ? `/zh${slug}` : slug).replace(/\/$/, ''),
+      });
+      createNodeField({
+        node,
+        name: `langKey`,
+        value: langKey,
+      });
+    }
+  };
   
+
+  exports.createPages = async ({ actions, graphql, reporter }) => {
+    const { createPage } = actions;
     const result = await graphql(`
-      query {
-        allEvent(sort: { fields: startDate, order: ASC }) {
-          nodes {
-            id
-            slug
+      {
+        allMarkdownRemark(
+          limit: 1000
+        ) {
+          edges {
+            node {
+              fields {
+                slug
+              }
+            }
           }
         }
       }
-    `)
-  
+    `);
+    // Handle errors
     if (result.errors) {
-      reporter.panic("error loading events", result.errors)
-      return
+      reporter.panicOnBuild(`Error while running GraphQL query.`);
+      return;
     }
-  
-    const events = result.data.allEvent.nodes
-    events.forEach(event => {
-      const slug = event.slug
-      actions.createPage({
-        path: slug,
-        component: require.resolve("./src/templates/event.js"),
-        context: {
-          eventID: event.id,
-        },
-      })
-    })
-  }
+    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+      const { slug } = node.fields;
+      createPage({
+        path: slug, // required
+        component: documentTemplate,
+      });
+    });
+  };

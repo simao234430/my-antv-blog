@@ -9,7 +9,10 @@
         "react-dom": "^18.2.0"
     },
     "dependencies": {
+        "gatsby-plugin-i18n": "^1.0.1",
+        "gatsby-plugin-typescript": "^4.22.0",
         "gatsby-source-filesystem": "^4.22.0",
+        "gatsby-transformer-remark": "^5.22.0",
         "gatsby-transformer-yaml": "^4.22.0"
     }
 }
