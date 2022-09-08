@@ -1,11 +1,11 @@
 import React from 'react';
 import { Result, Button } from 'antd';
 import { Link } from 'gatsby';
-import Layout from 'gatsby-antv-blog/src/components/layout';
+// import Layout from 'gatsby-antv-blog/src/components/layout';
 
 
 const NotFoundPage = () => (
-  <Layout>
+  // <Layout>
     <Result
       status="404"
       title="404"
@@ -19,7 +19,7 @@ const NotFoundPage = () => (
         </Link>
       }
     />
-  </Layout>
+  // </Layout>
 );
 
 export default NotFoundPage;

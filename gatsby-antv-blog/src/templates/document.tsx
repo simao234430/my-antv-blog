@@ -15,7 +15,10 @@ export default function Template({
     } = markdownRemark;
 
     return (
+ 
         <h2>{markdownRemark.fields.slug}</h2>
+ 
+
     )
   }
 
