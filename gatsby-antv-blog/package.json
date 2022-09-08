@@ -19,6 +19,8 @@
         "gatsby-source-filesystem": "^4.22.0",
         "gatsby-transformer-remark": "^5.22.0",
         "gatsby-transformer-yaml": "^4.22.0",
+        "omit.js": "^2.0.2",
+        "rc-footer": "^0.6.6",
         "react-i18next": "^11.18.5"
     }
 }

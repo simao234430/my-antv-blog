@@ -4,6 +4,8 @@ import { getCurrentLangKey } from 'ptz-i18n'
 import i18n from 'i18next'
 import { initReactI18next, useTranslation } from 'react-i18next'
 import Header from './header'
+import Footer, { OLD_SITE_DOMAIN } from './Footer';
+import { FooterProps } from 'rc-footer';
 import locale from '../../locale.json'
 
 i18n
@@ -14,12 +16,13 @@ i18n
     fallbackLng: 'zh',
   })
 
-const Layout: React.FC<any> = ({ children, location }) => {
+const Layout: React.FC<any> = ({ children, location, footerProps}) => {
   const { i18n } = useTranslation()
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
+          githubUrl
           title
           languages {
             langs
@@ -32,6 +35,7 @@ const Layout: React.FC<any> = ({ children, location }) => {
   const {
     site: {
       siteMetadata: {
+        githubUrl,
         title,
         languages: { langs, defaultLangKey },
         docs,
@@ -54,6 +58,12 @@ const Layout: React.FC<any> = ({ children, location }) => {
     <main>
       <Header location={location} currentLangKey={currentLangKey} docs={[]} />
       {children}
+      <Footer
+          githubUrl={githubUrl}
+          rootDomain="https://antv.vision"
+          location={location}
+          {...footerProps}
+        />
     </main>
   )
 }

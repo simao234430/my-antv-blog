@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     siteMetadata: {
         title: `AntV`,
+        githubUrl: 'https://github.com/antvis/gatsby-theme-antv',
         siteUrl: `https://antvis.github.io`,
         description: `Ant Visualization solution home page`,
         languages: {
@@ -43,7 +44,10 @@ module.exports = {
         {
             resolve: 'gatsby-plugin-less',
             options: {
-                javascriptEnabled: true,
+                lessOptions: {
+                    javascriptEnabled: true,
+                  },
+
             },
         },
         {
