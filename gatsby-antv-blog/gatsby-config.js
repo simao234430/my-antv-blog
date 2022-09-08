@@ -41,6 +41,7 @@ module.exports = {
                 ignore: [`**/\.*`],
             },
         },
+        `gatsby-remark-reading-time`,
         {
             resolve: 'gatsby-plugin-less',
             options: {
@@ -59,9 +60,35 @@ module.exports = {
         {
             resolve: `gatsby-transformer-remark`,
             options: {
-                plugins: []
-            }
-        },
+              plugins: [
+                {
+                  resolve: `gatsby-remark-prettier`,
+                  options: {
+                    // Look for local .prettierrc file.
+                    // The same as `prettier.resolveConfig(process.cwd())`
+                    usePrettierrc: true,
+                    // Overwrite prettier options, check out https://prettier.io/docs/en/options.html
+                    prettierOptions: {},
+                  },
+                },
+                {
+                  resolve: `gatsby-remark-prismjs`,
+                  options: {
+                    inlineCodeMarker: '±',
+                  },
+                },
+                {
+                  resolve: 'gatsby-remark-external-links',
+                  options: {
+                    target: '_self',
+                    rel: 'nofollow',
+                  },
+                },
+                `gatsby-remark-autolink-headers`,
+                `gatsby-remark-reading-time`,
+              ],
+            },
+          },
         {
             resolve: `gatsby-plugin-typescript`,
             options: {
