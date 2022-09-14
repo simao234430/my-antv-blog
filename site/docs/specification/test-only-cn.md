@@ -47,7 +47,7 @@ npm install @antv/g2
 
 ```js
 import G2 from '@antv/g2';
-
+//highlight-line
 const data = [
   { genre: 'Sports', sold: 275 },
   { genre: 'Strategy', sold: 1150 },

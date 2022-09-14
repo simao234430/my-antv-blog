@@ -59,6 +59,18 @@
         }
       }
 
+      .arrow {
+        width: 14px;
+        margin-left: 2px;
+        position: relative;
+        top: -2px;
+        transition: all 0.3s;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+
       .active {
         border-top: 2px solid #1890ff;
       }

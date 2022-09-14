@@ -33,6 +33,7 @@
         "prism-themes": "^1.9.0",
         "prismjs": "^1.29.0",
         "rc-footer": "^0.6.6",
-        "react-i18next": "^11.18.5"
+        "react-i18next": "^11.18.5",
+        "react-use": "^17.4.0"
     }
 }

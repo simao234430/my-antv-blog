@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Link, navigate } from 'gatsby'
 import { Popover, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import * as styles from './header.module.less'
-
-
+import Products from './products';
+// import AntvLogo from '../images/antv.svg';
+// import AntvHomeLogo from '../images/antvhome.svg';
+import { useMedia } from 'react-use';
 const { Option } = Select;
-
+import {
+    CheckOutlined,
+    GithubOutlined,
+    MenuOutlined,
+    CaretDownFilled,
+    DownOutlined,
+    WechatOutlined,
+  } from '@ant-design/icons';
+import classNames from 'classnames';
 export interface Doc {
   slug: string
   order: number
@@ -17,6 +27,16 @@ export interface Doc {
 }
 
 interface HeaderProps {
+      /** AntV root 域名，直接用主题的可不传 */
+  rootDomain?: string;
+      /** 默认语言 */
+  defaultLanguage?: 'zh' | 'en';
+      /** 是否是AntV官网 */
+  isAntVSite?: boolean;
+      /** 是否首页模式 */
+  isHomePage?: boolean;
+      /** 是否显示 AntV 产品卡片 */
+  showAntVProductsCard?: boolean;
   siteTitle?: string
   location?: Location
   currentLangKey?: string
@@ -25,11 +45,55 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   siteTitle = '',
+  showAntVProductsCard = true,
   location = { pathname: '' },
+  isHomePage,
+  rootDomain = '',
+  isAntVSite = false,
+  defaultLanguage,
   currentLangKey = '',
   docs = [],
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+    const lang =
+      typeof defaultLanguage !== 'undefined'
+        ? defaultLanguage
+        : i18n.language || '';
+    const isWide = useMedia('(min-width: 767.99px)', true);
+    const [productMenuVisible, setProductMenuVisible] = useState(false);
+    let productMenuHovering = false;
+    const onToggleProductMenuVisible = () => {
+        setProductMenuVisible(!productMenuVisible);
+      };
+    const onProductMouseEnter = (e: React.MouseEvent) => {
+        productMenuHovering = true;
+        e.persist();
+        setTimeout(() => {
+          if (e.target instanceof Element && e.target.matches(':hover')) {
+            setProductMenuVisible(true);
+          }
+        }, 200);
+      };
+      const onProductMouseLeave = (e: React.MouseEvent) => {
+        e.persist();
+        productMenuHovering = false;
+        setTimeout(() => {
+          if (productMenuHovering) {
+            return;
+          }
+          setProductMenuVisible(false);
+        }, 200);
+      };
+    const productItemProps = isWide
+    ? {
+        onMouseEnter: onProductMouseEnter,
+        onMouseLeave: onProductMouseLeave,
+      }
+    : {
+        onClick: onToggleProductMenuVisible,
+      };
+
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -47,14 +111,36 @@ const Header: React.FC<HeaderProps> = ({
         <ul className={styles.menu}>
           {/* <DocsMenuItems docs={docs} currentLangKey={currentLangKey} /> */}
           <li>
-            <Popover
-              title={null}
-            //   content={<Products />}
-              placement="bottomRight"
-              arrowPointAtCenter
-            >
-              <a>{t('所有产品')}</a>
-            </Popover>
+          {showAntVProductsCard ? (
+        <li {...productItemProps}>
+          <a>
+            {t('所有产品')}
+            {!isAntVHome ? (
+              <img
+                src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
+                alt="antv logo arrow"
+                className={classNames(styles.arrow, {
+                  [styles.open]: productMenuVisible,
+                })}
+              />
+            ) : (
+              <CaretDownFilled
+                style={{ top: '1px', color: '#fff' }}
+                className={classNames(styles.arrow, {
+                  [styles.open]: productMenuVisible,
+                })}
+              />
+            )}
+          </a>
+          <Products
+            className={styles.productsMenu}
+            show={productMenuVisible}
+            rootDomain={rootDomain}
+            language={defaultLanguage}
+          />
+        </li>
+      ) : null}
+
           </li>
           <li>
             <Popover
