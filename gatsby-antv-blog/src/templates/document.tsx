@@ -32,7 +32,7 @@ export const getGithubSourceUrl = ({
         '/edit/master/',
       )}/${prefix}/${relativePath}`;
     }
-    return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
+    return `${githubUrl}/edit/main/site/${prefix}/${relativePath}`;
   };
 
 const getMenuItemlocaleKey = (slug: string = '') => {

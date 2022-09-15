@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     siteMetadata: {
         title: `AntV`,
-        githubUrl: 'https://github.com/simao234430/antv-blog/tree/main/site/',
+        githubUrl: 'https://github.com/simao234430/my-antv-blog',
         siteUrl: `https://antvis.github.io`,
         description: `Ant Visualization solution home page`,
         languages: {
