@@ -22,6 +22,13 @@ const Layout: React.FC<any> = ({ children, location, footerProps}) => {
     query SiteTitleQuery {
       site {
         siteMetadata {
+            navs {
+                slug
+                title {
+                    zh
+                    en
+                }
+            }
           githubUrl
           title
           languages {
@@ -35,6 +42,7 @@ const Layout: React.FC<any> = ({ children, location, footerProps}) => {
   const {
     site: {
       siteMetadata: {
+        navs,
         githubUrl,
         title,
         languages: { langs, defaultLangKey },
@@ -56,7 +64,7 @@ const Layout: React.FC<any> = ({ children, location, footerProps}) => {
   }, [currentLangKey])
   return (
     <main>
-      <Header location={location} currentLangKey={currentLangKey} docs={[]} />
+      <Header   navs={navs} location={location} currentLangKey={currentLangKey} docs={[]} />
       {children}
       <Footer
           githubUrl={githubUrl}

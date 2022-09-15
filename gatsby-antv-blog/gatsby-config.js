@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     siteMetadata: {
         title: `AntV`,
-        githubUrl: 'https://github.com/antvis/gatsby-theme-antv',
+        githubUrl: 'https://github.com/simao234430/antv-blog/tree/main/site/',
         siteUrl: `https://antvis.github.io`,
         description: `Ant Visualization solution home page`,
         languages: {
@@ -51,6 +51,14 @@ module.exports = {
 
             },
         },
+        {
+            resolve: 'gatsby-plugin-react-svg',
+            options: {
+              rule: {
+                include: /images/, // See below to configure properly
+              },
+            },
+          },
         {
             resolve: `gatsby-plugin-layout`,
             options: {

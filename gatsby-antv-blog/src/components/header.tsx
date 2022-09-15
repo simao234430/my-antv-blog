@@ -4,6 +4,7 @@ import { Popover, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import * as styles from './header.module.less'
 import Products from './products';
+import NavMenuItems, { Nav } from './NavMenuItems';
 // import AntvLogo from '../images/antv.svg';
 // import AntvHomeLogo from '../images/antvhome.svg';
 import { useMedia } from 'react-use';
@@ -27,6 +28,8 @@ export interface Doc {
 }
 
 interface HeaderProps {
+      /** 文档和演示的菜单数据 */
+  navs?: Nav[];
       /** AntV root 域名，直接用主题的可不传 */
   rootDomain?: string;
       /** 默认语言 */
@@ -48,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({
   showAntVProductsCard = true,
   location = { pathname: '' },
   isHomePage,
+  navs = [],
   rootDomain = '',
   isAntVSite = false,
   defaultLanguage,
@@ -93,22 +97,10 @@ const Header: React.FC<HeaderProps> = ({
     : {
         onClick: onToggleProductMenuVisible,
       };
-
-  return (
-    <header className={styles.header}>
-      <div className={styles.left}>
-        <h1>
-          <Link to="/">
-            <img
-              src="https://gw.alipayobjects.com/os/s/prod/antv/assets/image/logo-with-text-73b8a.svg"
-              alt={siteTitle}
-            />
-          </Link>
-        </h1>
-        <span className={styles.divider} />
-      </div>
-      <nav className={styles.nav}>
+      const menu = (
+        <nav className={styles.nav}>
         <ul className={styles.menu}>
+        {navs && navs.length ? <NavMenuItems path='' navs={navs} /> : null}
           {/* <DocsMenuItems docs={docs} currentLangKey={currentLangKey} /> */}
           <li>
           {showAntVProductsCard ? (
@@ -169,6 +161,21 @@ const Header: React.FC<HeaderProps> = ({
         </Select>
         {/* <GithubCorner href="https://github.com/antvis" size={64} /> */}
       </nav>
+      )
+  return (
+    <header className={styles.header}>
+      <div className={styles.left}>
+        <h1>
+          <Link to="/">
+            <img
+              src="https://gw.alipayobjects.com/os/s/prod/antv/assets/image/logo-with-text-73b8a.svg"
+              alt={siteTitle}
+            />
+          </Link>
+        </h1>
+        <span className={styles.divider} />
+      </div>
+    {menu}
     </header>
   )
 }

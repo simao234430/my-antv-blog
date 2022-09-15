@@ -6,7 +6,34 @@ import { groupBy } from 'lodash-es';
 import { useTranslation } from 'react-i18next'
 import { Layout as AntLayout, Menu, Tooltip, Affix, Tag } from 'antd'
 import Article from '../components/article'
+import {
+    EditOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    VerticalAlignTopOutlined,
+    CaretDownOutlined,
+    CaretRightOutlined,
+  } from '@ant-design/icons';
 import * as styles from './markdown.module.less'
+
+export const getGithubSourceUrl = ({
+    githubUrl,
+    relativePath,
+    prefix,
+  }: {
+    githubUrl: string;
+    relativePath: string;
+    prefix: string;
+  }): string => {
+    // https://github.com/antvis/x6/tree/master/packages/x6-sites
+    if (githubUrl.includes('/tree/master/')) {
+      return `${githubUrl.replace(
+        '/tree/master/',
+        '/edit/master/',
+      )}/${prefix}/${relativePath}`;
+    }
+    return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
+  };
 
 const getMenuItemlocaleKey = (slug: string = '') => {
     const slugPieces = slug.split('/');
@@ -47,10 +74,13 @@ export default function Template({
   const { markdownRemark, allMarkdownRemark , site} = data // data.markdownRemark holds our post data
   const {
     siteMetadata: {
-      languages: { langs, defaultLangKey },
+
+         githubUrl ,
+      languages: { langs, defaultLangKey, },
       docs,
     },
   } = site;
+  const { t, i18n } = useTranslation();
   const {
     frontmatter,
     html,
@@ -67,7 +97,7 @@ export default function Template({
 );
 const currentLangKey = getCurrentLangKey(langs, defaultLangKey, path);
 const [openKeys, setOpenKeys] = useState<string[]>(Object.keys(groupedEdges));
-const { i18n } = useTranslation();
+
 const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 useEffect(() => {
   setCurrentLanguage(i18n.language);
@@ -131,13 +161,18 @@ useEffect(() => {
           <div className={styles.main}>
             <h1>
               {frontmatter.title}
-              <Tooltip title="在 GitHub 上编辑">
+              <Tooltip title={t('在 GitHub 上编辑')}>
                 <a
-                  // href={`${packageJson.repository.url}/edit/master/${relativePath}`}
+                  href={getGithubSourceUrl({
+                    githubUrl,
+                    relativePath,
+                    prefix: 'docs',
+                  })}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className={styles.editOnGtiHubButton}
                 >
-                  {/* <Icon type="edit" /> */}
+                  <EditOutlined />
                 </a>
               </Tooltip>
             </h1>

@@ -7,6 +7,37 @@ module.exports = {
           langs: ['en', 'zh'],
           defaultLangKey: 'zh',
         },
+        navs: [
+            {
+              slug: 'docs/specification/getting-started',
+              title: {
+                zh: '设计语言',
+                en: 'Specification',
+              },
+            },
+            {
+              slug: 'docs/api',
+              title: {
+                zh: 'API 文档示例',
+                en: 'API docs',
+              },
+            },
+            {
+              slug: 'examples',
+              title: {
+                zh: '图表示例',
+                en: 'Examples',
+              },
+            },
+            {
+              slug: 'independent',
+              title: {
+                zh: '独立',
+                en: 'MyApp',
+              },
+              // target: '_blank',
+            },
+          ],
         docs: [
             {
               slug: 'specification',
