@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import shallowequal from 'shallowequal';
 import { useTranslation } from 'react-i18next';
 import ExternalLinkIcon from './ExternalLinkIcon';
-import * as styles from './Header.module.less';
+import * as styles from './header.module.less';
 
 const getDocument = (navs: Nav[], slug = '') =>
   navs.find(doc => doc.slug === slug) || {
