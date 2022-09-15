@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import Product from './Product';
+import Product from './product';
 import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
 import { useChinaMirrorHost } from '../hooks';
 import * as styles from './product.module.less';
