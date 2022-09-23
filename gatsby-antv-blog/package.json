@@ -9,9 +9,14 @@
         "react-dom": "^18.2.0"
     },
     "dependencies": {
+        "@algolia/autocomplete-core": "^1.7.1",
+        "@algolia/autocomplete-preset-algolia": "^1.7.1",
+        "@docsearch/css": "^3.2.1",
         "@types/lodash-es": "^4.17.6",
         "antd": "^4.23.0",
         "classnames": "^2.3.1",
+        "dotenv": "^16.0.2",
+        "gatsby-plugin-algolia": "^0.26.0",
         "gatsby-plugin-i18n": "^1.0.1",
         "gatsby-plugin-layout": "^3.22.0",
         "gatsby-plugin-less": "^6.22.0",
@@ -27,6 +32,7 @@
         "gatsby-transformer-remark": "^5.22.0",
         "gatsby-transformer-yaml": "^4.22.0",
         "i18next": "^21.9.1",
+        "instantsearch.css": "^7.4.5",
         "lodash-es": "^4.17.21",
         "normalize.css": "^8.0.1",
         "omit.js": "^2.0.2",
@@ -35,6 +41,10 @@
         "prismjs": "^1.29.0",
         "rc-footer": "^0.6.6",
         "react-i18next": "^11.18.5",
+        "react-instantsearch-hooks-web": "^6.33.0",
         "react-use": "^17.4.0"
+    },
+    "devDependencies": {
+        "@types/dotenv": "^8.2.0"
     }
 }

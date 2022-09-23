@@ -5,6 +5,11 @@ import { useTranslation } from 'react-i18next';
 import * as styles from './header.module.less'
 import Products from './products';
 import NavMenuItems, { Nav } from './NavMenuItems';
+import Search  from './Search';
+// import algoliasearch from 'algoliasearch/lite';
+// import { InstantSearch, SearchBox, Hits  } from 'react-instantsearch-hooks-web';
+
+// const searchClient = algoliasearch('6YSSSBX98L', '86d2e4fe47717b699ce91fc9cf27a0fe');
 // import AntvLogo from '../images/antv.svg';
 // import AntvHomeLogo from '../images/antvhome.svg';
 import { useMedia } from 'react-use';
@@ -18,6 +23,7 @@ import {
     WechatOutlined,
   } from '@ant-design/icons';
 import classNames from 'classnames';
+
 export interface Doc {
   slug: string
   order: number
@@ -174,6 +180,11 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </h1>
         <span className={styles.divider} />
+        <Search></Search>
+        {/* <InstantSearch searchClient={searchClient} indexName="Pages">
+        <SearchBox />
+      <Hits />
+    </InstantSearch> */}
       </div>
     {menu}
     </header>
